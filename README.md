@@ -9,7 +9,7 @@ Built using:
 
 ---
 
-## 🔥 Features
+## Features
 
 ✅ Real-time webcam capture  
 ✅ Object detection using AI  
@@ -19,7 +19,7 @@ Built using:
 
 ---
 
-## 🧠 How It Works
+## How It Works
 
 1. The webcam captures an image
 2. Image is sent to Flask backend
@@ -29,7 +29,7 @@ Built using:
 
 ---
 
-## 📸 Demo Flow
+## Demo Flow
 
 - Click **Scan**
 - System captures frame
@@ -38,7 +38,7 @@ Built using:
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Layer      | Tech                     |
 |------------|--------------------------|
@@ -49,7 +49,7 @@ Built using:
 
 ---
 
-## ⚙️ Installation & Setup
+## Installation & Setup
 
 ### 1. Clone the repo
 
