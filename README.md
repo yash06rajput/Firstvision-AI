@@ -1,4 +1,4 @@
-# 🚀 FirstVision AI
+# FirstVision AI
 
 FirstVision AI is a real-time object detection web application that uses your webcam to identify objects and instantly search them on the web.
 
