@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>FirstVision AI</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #ffffff, #e6f0ff);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            margin-top: 30px;
+            font-size: 32px;
+        }
+
+        .container {
+            display: flex;
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .camera-box {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        }
+
+        video, canvas {
+            border-radius: 15px;
+            width: 400px;
+        }
+
+        button {
+            padding: 12px 20px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .scan-btn {
+            background: black;
+            color: white;
+        }
+
+        .results {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            width: 300px;
+            min-height: 300px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        }
+
+        .card {
+            background: #f4f6f8;
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+        }
+
+        .actions button {
+            margin-right: 5px;
+            font-size: 12px;
+        }
+
+        .loading {
+            text-align: center;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>🚀 FirstVision AI</h1>
+
+<div class="container">
+
+    <!-- Camera -->
+    <div class="camera-box">
+        <video id="video" autoplay></video>
+        <canvas id="canvas" style="display:none;"></canvas>
+
+        <div>
+            <button class="scan-btn" onclick="scan()">📸 Scan</button>
+        </div>
+    </div>
+
+    <!-- Results -->
+    <div class="results">
+        <h3>Results</h3>
+        <div id="results"></div>
+    </div>
+
+</div>
+
+<script>
+const video = document.getElementById('video');
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+// Start camera
+navigator.mediaDevices.getUserMedia({ video: true })
+    .then(stream => video.srcObject = stream)
+    .catch(err => alert("Camera permission needed"));
+
+// Scan function
+function scan() {
+    console.log("🔥 SCAN CLICKED");   // 1️⃣ button working?
+
+    const resultsDiv = document.getElementById('results');
+    resultsDiv.innerHTML = "⏳ Scanning...";
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    ctx.drawImage(video, 0, 0);
+
+    console.log("📸 IMAGE CAPTURED");   // 2️⃣ camera working?
+
+    canvas.toBlob(blob => {
+        console.log("📦 BLOB CREATED");   // 3️⃣ blob working?
+
+        const formData = new FormData();
+        formData.append('image', blob);
+
+        console.log("🚀 SENDING REQUEST");   // 4️⃣ fetch triggered?
+
+        fetch('http://127.0.0.1:5000/detect', {
+            method: 'POST',
+            body: formData,
+            mode: 'cors'
+        })
+        .then(res => {
+            console.log("✅ RESPONSE RECEIVED");   // 5️⃣ response came?
+            return res.json();
+        })
+        .then(data => {
+            console.log("📊 DATA:", data);   // 6️⃣ data correct?
+            showResults(data);
+        })
+        .catch(err => {
+            console.error("❌ FETCH ERROR:", err);
+            resultsDiv.innerHTML = "❌ Error scanning";
+        });
+    });
+}
+
+// Show results
+function showResults(objects) {
+    const div = document.getElementById('results');
+    div.innerHTML = "";
+
+    objects.forEach(obj => {
+        const card = document.createElement('div');
+        card.className = "card";
+
+        card.innerHTML = `
+            <strong>${obj.label}</strong><br>
+            Confidence: ${obj.score}
+            <div class="actions">
+                <button onclick="searchWeb('${obj.label}')">🌐 Search</button>
+            </div>
+        `;
+
+        div.appendChild(card);
+    });
+}
+
+// Search
+function searchWeb(label) {
+    window.open(`https://www.google.com/search?q=${label}`);
+}
+</script>
+
+</body>
+</html>
