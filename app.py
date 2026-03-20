@@ -8,7 +8,7 @@ CORS(app)
 # 🔑 Replace with your HuggingFace token
 API_URL = "https://api-inference.huggingface.co/models/google/owlvit-base-patch32"
 headers = {
-    "Authorization": "Bearer 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"
+    "Authorization": "Bearer "
 }
 
 @app.route('/detect', methods=['POST'])
